@@ -1,0 +1,50 @@
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Create  Category</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding"> 
+<ion-card class="category-card">
+  <ion-card-content>
+ <ion-list>
+<ion-list>
+<ion-item>
+  <ion-button fill="clear" id="open-modal"><ion-avatar slot="start" >
+    <ion-icon [name]="this.createcategoryform.icon" size="large"></ion-icon>
+  </ion-avatar></ion-button>
+  <ion-input  #nameRef="ngModel" name="categoryname" placeholder="Enter category name" [(ngModel)]="createcategoryform.name"></ion-input>
+</ion-item>
+<ion-modal #modal trigger="open-modal">
+  <ng-template>
+    <ion-content>
+      <ion-toolbar>
+        <ion-title>Select Icon</ion-title>
+        <ion-buttons slot="end">
+          <ion-button color="light" (click)="modal.dismiss()">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="3" *ngFor="let icon of icons">
+               <ion-button fill=clear size="large" (click)="selectingIcon(icon)"><ion-icon [name]="icon"></ion-icon></ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid> 
+          <ion-text color="danger" *ngIf="iconTouched && !selectedIcon || nameRef.invalid && nameRef.touched">
+        <p class="ion-padding-start">Please select an icon</p>
+        </ion-text>
+        </ion-item> 
+  </ion-list>
+  </ion-content>
+  </ng-template>
+  </ion-modal>
+  </ion-list>
+  </ion-list>
+</ion-card-content>
+</ion-card>
+<ion-button id="create" (click)=createCategory()>Create</ion-button>
+</ion-content>

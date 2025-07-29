@@ -1,0 +1,296 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="selectedSegment">
+      <ion-segment-button value="all" id="Entry">
+        <ion-label>Entry</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="view" id="View">
+        <ion-label>View</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div *ngIf="selectedSegment === 'all'">
+  <form #form="ngForm" (ngSubmit)="Save(form)">
+  
+  <ion-card class=incomecard>
+    <div class="input-container">
+    <ion-list>
+      <ion-item>
+        <ion-input name=income #nameRef="ngModel" label="Enter income" label-placement="stacked" 
+        placeholder="Enter amount"  [(ngModel)]="incomeForm.amount" required><span style="color:red">*</span>
+        <ion-icon slot="start" name="card-outline" ></ion-icon>
+      </ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="nameRef.invalid && nameRef.touched && !formSubmitted">
+    <p class="p">*Please enter the amount</p>
+  </ion-text>
+          <ion-item>
+            <ion-input name=source labelPlacement="stacked" label="Source of income" placeholder="Who paid you?" 
+            [(ngModel)]="incomeForm.inflowOroutflow">
+              <ion-icon slot="start" name="wallet-outline" aria-hidden="true"></ion-icon>
+            </ion-input>
+          </ion-item>
+            <ion-item>
+              <ion-input name=category #categoryinput='ngModel' labelPlacement="stacked" label="Category" 
+              placeholder="Select the income category"  css-class="modal-one"
+               (click)="inputclick()" [(ngModel)]="incomeForm.category" required>
+                <ion-icon slot="start" [name]="selectedIcon" aria-hidden="true"></ion-icon>
+                <ion-button fill="clear" slot="end" aria-label="down" id="open-income" (click)="isChevronUp = !isChevronUp">
+                <ion-icon [name]="isChevronUp ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+                </ion-button>
+                </ion-input>
+              </ion-item>
+               <ion-text color="danger" *ngIf="categoryinput.invalid && categoryinput.touched &&!formSubmitted ">
+                <span style="color:red"></span>
+    <p class="p">*Please select a category</p>
+    </ion-text>
+              <ion-modal #modal trigger="open-income"(willPresent)="isChevronUp = true" (didDismiss)="isChevronUp = false"ccss-class=modaltwo>
+              <ng-template>
+                <ion-content>
+                  <ion-toolbar>
+                    <ion-title>Categories</ion-title>
+                    <ion-buttons slot="end">
+                      <ion-button color="light" (click)="modal.dismiss()">Close</ion-button>
+                    </ion-buttons>
+                  </ion-toolbar>
+                  <ion-card class=category-card>
+                  <div>
+                    <label>Favourite Category</label>
+                    <p>Add your favourite categories by clicking on the heart icon</p>
+                    <ion-grid>
+                      <ion-row>
+                        <ion-col size="6"
+                        *ngFor="let favourite of favCategories"
+                        (click)="selectCategory(favourite.name,favourite.icon)">
+                        <div class="button-content">
+                          <ion-icon [name]="favourite.icon" class="category-icon"></ion-icon>
+                          <ion-icon id=hearticon name="heart" (click)="toggleFavorite(favourite);$event.stopPropagation()  
+                          "[style.color]="favourite.isFavourite ? 'red' : 'black'"></ion-icon>
+                          <span>{{ favourite.name }}</span>
+                        </div>
+                        </ion-col>
+                        </ion-row>
+                        </ion-grid>
+                       </div>
+                  <ion-grid>
+                    <ion-row>
+                      <ion-col size="6"
+                        *ngFor="let category of allCategories" 
+                        (click)="selectCategory(category.name,category.icon)">
+                         <ion-button  fill=clear size="auto" expand="block" 
+                         [ngClass]="{'selected-category': selectedCategory === category.name}">
+                        <div class="button-content">
+                        <ion-icon [name]="category.icon" class="category-icon"></ion-icon>
+                        <ion-icon id=hearticon name="heart" (click)="toggleFavorite(category);$event.stopPropagation()  
+                        "[style.color]="category.isFavourite ? 'red' : 'black'"></ion-icon>
+                        <span>{{ category.name }}</span>
+                      </div>
+                    </ion-button>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                   </ion-card>
+                </ion-content>
+                </ng-template>
+                </ion-modal>
+              <ion-item>
+  <ion-input readonly displayFormat="MMMM YY" name="date" labelPlacement="stacked" 
+             label="Date" placeholder="Select Date" [(ngModel)]="incomeForm.date" 
+             (click)="toggleCalendar()">
+    <ion-icon slot="start" name="calendar-outline" aria-hidden="true" 
+              (click)="toggleCalendar()"></ion-icon>
+  </ion-input>
+</ion-item>
+
+<div *ngIf="isCalendarHidden" style="width: 100%; padding: 10px;">
+  <ion-datetime presentation="date" 
+                (ionChange)="onDateChange($event.detail.value)" 
+                [value]="this.selectedDate" 
+                style="width: 100%;"></ion-datetime>
+</div>
+              <ion-item>
+                <ion-input name=note labelPlacement="stacked" label="Note" placeholder="Enter note" [(ngModel)]="incomeForm.note">
+                  <ion-icon slot="start" name="clipboard-outline" aria-hidden="true"></ion-icon>
+                  <ion-button fill="clear" slot="end" aria-label="Show/hide">
+                  </ion-button>
+                </ion-input>
+              </ion-item>           
+            </ion-list>
+            </div>            
+            </ion-card>
+        <ion-button *ngIf="!editId || editId === ''" type="submit" class="saveButton" (click)="Save(form)">Save</ion-button>
+<ion-button *ngIf="editId && editId !== ''" fill="outline" shape="round" class="saveButton" (click)="Save(form)">Update</ion-button>
+            </form>
+
+      </div>
+      <div *ngIf="selectedSegment==='view'">
+        <ion-grid >
+          <ion-row>
+            <ion-col size="8">
+        <ion-searchbar class="search" show-clear-button="always" (ionInput)="onSearch($event)" #search></ion-searchbar>
+      </ion-col>
+        <ion-col size="2">
+          <ion-button class="sort" fill="clear"id="click-trigger">
+         <ion-popover trigger="click-trigger" triggerAction="click">
+         <ng-template>
+         <ion-content class="ion-padding">
+          <ion-item><ion-button fill="clear" class="filtercategory" (click)="sort('descending')">From newest to oldest  </ion-button></ion-item>
+            <ion-item><ion-button fill="clear" class="filtercategory" (click)="sort('ascending')">From oldest to newest </ion-button></ion-item>
+         </ion-content>
+        </ng-template>
+        </ion-popover>
+            <ion-icon size=large name="swap-vertical-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button class="sort" id=filtermodal fill="clear">
+            <ion-icon size=large name="funnel-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      </ion-grid>
+      <ion-modal name=filtermodal css-class="modal-two" #modal trigger="filtermodal" [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Filter</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="modal.dismiss()">Close</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+            <ion-grid class="gridfilter">
+              <ion-card class="roundedcard">
+                <ion-row>
+                <ion-col size="5" class="left-panel">
+                <ion-list>
+                <ion-item [ngClass]="activeView=='amount'? 'selected-border' : 'default-border'">
+                <ion-col>
+                <ion-button class="button-content"   (click)="selectedview('amount')" fill="clear">Amount</ion-button></ion-col>
+            </ion-item>
+                <ion-item [ngClass]="activeView==='category'? 'selected-border' : 'default-border'"><ion-row ><ion-button class="button-content" (click)="selectedview('category')" fill="clear">Category</ion-button></ion-row></ion-item>
+                <ion-item [ngClass]="activeView==='date'? 'selected-border' : 'default-border'"><ion-row ><ion-button class="button-content" (click)="selectedview('date')"  fill="clear">Date</ion-button></ion-row></ion-item>
+                <ion-item [ngClass]="activeView==='donor'? 'selected-border' : 'default-border'"><ion-row ><ion-button class="button-content" (click)="selectedview('donor')" fill="clear">Donor</ion-button></ion-row></ion-item>
+                <ion-item [ngClass]="activeView==='note'? 'selected-border' : 'default-border'"><ion-row ><ion-button class="button-content" (click)="selectedview('note')"  fill="clear">Note</ion-button></ion-row></ion-item>
+                </ion-list>
+                </ion-col>
+                 <ion-col>
+                  <div *ngIf="activeView === 'amount'">                  
+                  <p><b>Amount</b></p>
+                  <hr class=hr>
+                  <br>
+                  ₹{{ priceRange.lower | number:'1.0-0' }} – 
+                {{ priceRange.upper >= 100000 ? '₹1,00,000+' : ('₹' + (priceRange.upper | number:'1.0-0')) }}
+                 <ion-range class=range min="0"  max="100000" step="1000" (ionChange)="onIonChange($event)" dualKnobs="true" [(ngModel)]="priceRange">
+                  </ion-range> 
+                </div>
+                <div *ngIf="activeView === 'category'">
+                  <p><b>Categories</b></p>
+                  <hr class=hr>
+                  <ion-button *ngFor="let items of filteredCategories" color="dark" shape="round" 
+                   [color]="selectedSets['category'].has(items.name) ? 'primary' : 'medium'"
+                  [fill]="selectedButtons.has(items.name) ? 'solid' : 'outline'" 
+                  size="small" 
+                 class="filtercategory" (click)="selectMultiple(items.name,'category')"
+                 >{{items.name}}</ion-button>
+                </div>
+                  <div *ngIf="activeView === 'date'">
+                  <p><b>Date</b></p>
+                  <hr class=hr>
+                  <ion-label>From</ion-label>
+                  <ion-button fill="clear" color="dark" id="bottom-center"><ion-icon name="calendar-outline" (click)="toggleCalendar()"></ion-icon></ion-button>
+                 <ion-popover trigger="bottom-center" side="bottom" alignment="center">
+                 <ion-datetime presentation="date"  *ngIf="!isCalendarHidden" 
+                (ionChange)="onDateChange($event.detail.value)" [value]="selectedDate" >
+                 </ion-datetime>
+                  </ion-popover>
+                 <ion-label>To</ion-label>
+                  <ion-button fill="clear" color="dark" id="to"><ion-icon name="calendar-outline" (click)="toggleCalendar()"></ion-icon></ion-button>
+                 <ion-popover trigger="to" side="bottom" alignment="center">
+                 <ion-datetime presentation="date"  *ngIf="!isCalendarHidden" 
+                (ionChange)="onDateChange($event.detail.value)" [value]="selectedDate" >
+                  </ion-datetime>
+                  </ion-popover>
+                </div>
+                <div *ngIf="activeView === 'donor'">
+                  <p><b>Donor</b></p>
+                  <hr class=hr>
+                <div *ngFor="let items of incomelist">
+                <ng-container *ngIf="items.inflowOroutflow!=''">
+                <ion-button color="dark" [fill]="selectedButtons.has(items.inflowOroutflow) ? 'solid' : 'outline'" 
+                shape="round" fill=outline size="small" class="filtercategory" (click)="selectMultiple(items.inflowOroutflow,'inflowOroutflow')"
+                [color]="selectedButtons.has(items.inflowOroutflow) ? 'primary' : 'medium'" >
+                {{items.inflowOroutflow}}</ion-button>
+              </ng-container>           
+              </div>
+                </div>
+                  <div *ngIf="activeView === 'note'">
+                    <p><b>Note</b></p>
+                  <hr class=hr>
+                  <div *ngFor="let items of incomelist">
+                  <ng-container *ngIf="items.note!=''">
+                  <ion-button color="dark" shape="round" fill=outline size="small" 
+                  class="filtercategory" (click)="selectMultiple(items.note,'note')"
+                  [color]="selectedButtons.has(items.note) ? 'primary' : 'medium'"
+                  [fill]="selectedButtons.has(items.note) ? 'solid' : 'outline'">
+                  {{items.inflowOroutflow}}</ion-button>
+                </ng-container>           
+                </div>
+                  </div>
+                 </ion-col>
+                </ion-row>
+                <ion-button color=dark class=filterbutton shape="round" fill="outline" (click)="filtersApplied()">Apply</ion-button>  
+            </ion-card>
+            </ion-grid>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+    <div>
+    <ion-card class="roundedcard"> 
+   <ion-card-header>
+     <ion-card-subtitle><b>Income Streams</b></ion-card-subtitle>
+   </ion-card-header>
+  <ion-card-content>
+<ion-card *ngFor="let items of displayList; trackBy: trackById" class="roundedcard">
+  <ion-item>
+    {{ items.date }}
+    <ion-button class="edit" size="small" fill="clear" slot="end" 
+      (click)="EditIncome(items.Id, items.date)">
+      <ion-icon slot="end" name="create-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button class="edit" size="small" fill="clear" slot="end"
+      (click)="Delete(items.Id, isFilterApplied ? 'filter' : 'incomelist')">
+      <ion-icon name="trash-outline"></ion-icon>
+    </ion-button>
+  </ion-item>
+  <ion-item>
+                  <ion-label>Category :</ion-label>
+                  {{ items.category }}
+                </ion-item>
+                <ion-item>
+                  <ion-label>Amount :</ion-label>
+                  {{ items.amount }}
+                </ion-item>
+                <ion-item>
+                  <ion-label>Received from:</ion-label>
+                  {{ items.inflowOroutflow}}
+                </ion-item>
+                <ion-item>
+                  <ion-label>Note :</ion-label>
+                  {{ items.note}}
+                </ion-item>
+</ion-card>
+  </ion-card-content>    
+   </ion-card>
+      </div>
+        </div>
+      </ion-content>  
+      
+  
+
+         

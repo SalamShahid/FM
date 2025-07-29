@@ -1,0 +1,92 @@
+:host(.fab-button) {
+  position: absolute !important;
+  bottom: 6px;
+  right: 8px;
+  z-index: 10;
+}
+
+
+:host(.fab-list) {
+  position: absolute !important;
+  bottom: 56px !important; 
+  right: 16px;
+  z-index: 9999;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+
+.roundedcard
+{
+  border-radius: 20px;
+  
+}
+.cardcolor{
+    background-color:#69bb7b;
+    overflow: visible
+    
+}
+ion-fab {
+  z-index: 9999; 
+}
+
+.fab-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.fab-label {
+  position: absolute;
+  right: 60px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0; 
+  transition: opacity 0.3s ease-in-out;
+}
+
+ion-fab-list {
+  overflow: visible !important;
+  position: absolute;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+
+.fab-label {
+position: absolute;
+right: 60px;
+background-color: rgba(0, 0, 0, 0.7);
+color: white;
+padding: 4px 8px;
+border-radius: 4px;
+font-size: 12px;
+white-space: nowrap;
+opacity: 0; /* Initially hidden */
+transition: opacity 0.3s ease-in-out;
+}
+
+
+.show-labels .fab-label {
+opacity: 1;
+}
+
+.custom-btn-fab 
+{
+    --background:#69bb7b;
+    --color: black;
+    
+}
+
+ion-fab.fab-button {
+  position: absolute !important;
+  bottom: calc(env(safe-area-inset-bottom) + 28px); /* Adjust value based on your design */
+  right: 16px;
+  z-index: 9999;
+  transform: translateY(50%); /* Moves half inside tab bar */
+}
+

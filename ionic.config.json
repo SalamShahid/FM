@@ -1,0 +1,7 @@
+{
+  "name": "NewFinManager",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

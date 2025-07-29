@@ -1,0 +1,52 @@
+<ion-content [fullscreen]="true">
+  
+   <ion-tabs [class.fab-active]="showFab" (ionTabsDidChange)="updateFabVisibility($event.tab)">
+     <ion-tab-bar slot="bottom" class="tabclass" selectedTab="home" > 
+  <ion-grid>
+     <ion-row>
+     <ion-col>
+    <ion-tab-button tab="home"   fill="clear"  color="light">
+       <ion-icon name="home-outline"></ion-icon>
+       Home
+     </ion-tab-button>
+    </ion-col>
+    <ion-col>
+      <ion-tab-button tab="income" fill="clear">
+     <ion-icon name="wallet-outline"></ion-icon>
+     Income
+   </ion-tab-button>
+   </ion-col>
+   <ion-col>
+     <ion-tab-button tab="expense" fill="clear">
+       <ion-icon name="cash-outline"></ion-icon>
+       Expense
+   </ion-tab-button> 
+  </ion-col>
+</ion-row>
+</ion-grid>
+</ion-tab-bar>
+</ion-tabs>
+   <!-- <ng-container *ngIf="showFab"> -->
+    <!-- <ion-tab-button > -->
+    <!-- <app-fablist></app-fablist> -->
+  <!-- </ion-tab-button> -->
+  <!-- </ng-container> -->
+  <!-- <app-fablist *ngIf="showFab"></app-fablist> -->
+</ion-content>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,20 @@
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fab-tab-button">
+  <ion-fab-button (click)="toggleFab()" class="custom-btn-fab fab-in-tab">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-list vertical="bottom" side="top" [class.show-labels]="isFabOpen" >
+    <div class="fab-container">
+      <ion-fab-button (click)="Analytics()">
+        <ion-icon name="stats-chart"></ion-icon>
+      </ion-fab-button>
+      <span class="fab-label" *ngIf="isFabOpen">Analytics</span>
+    </div>
+    <div class="fab-container">
+      <ion-fab-button (click)="Budget()">
+        <ion-icon name="bag-outline" ></ion-icon>
+      </ion-fab-button>
+      <span class="fab-label" *ngIf="isFabOpen">Budget</span>
+    </div>
+  </ion-fab-list>
+</ion-fab>

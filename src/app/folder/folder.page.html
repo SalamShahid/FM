@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons> 
+   </ion-toolbar>
+</ion-header> 
+  <ion-content [fullscreen]="true"> 
+ <ion-header collapse="condense">
+    <ion-toolbar>
+    <ion-title size="large">{{ folder }}</ion-title>
+   </ion-toolbar>
+  </ion-header>
+  <ion-card class="roundedcard" > 
+     <div class="calendar-header">
+      <span class="spanclass" *ngIf="selectedDate">
+        {{selectedDate | date: 'd MMMM y - EEEE'}}
+      </span>
+      </div> 
+<div class="calendar-wrapper">
+  <!-- Icon - only show when calendar is hidden -->
+  <div class="icon-container" *ngIf="isCalendarHidden" (click)="toggleCalendar()">
+    <ion-item>
+      <ion-icon name="calendar-outline" class="calendar-icon"></ion-icon>
+    </ion-item>
+  </div>
+  
+  <!-- Calendar - show when not hidden -->
+  <div #calendarCard class="calendar-container" *ngIf="!isCalendarHidden">
+    <ion-datetime presentation="date" 
+                  [highlightedDates]="highlightedDates"
+                  (ionChange)="onDateChange($event.detail.value)" 
+                  [value]="selectedDate">
+    </ion-datetime>
+  </div>
+</div>
+
+</ion-card> 
+
+ <ion-card class="roundedcard"> 
+<ion-card-header>
+  <ion-card-title>Expense</ion-card-title>
+</ion-card-header>
+<ion-card-content>
+          <ng-container *ngFor="let items of this.expenses">
+            <ion-list *ngIf="items.date==this.selectedDate">
+              <ion-item > 
+                 <ion-label>{{ items.category }}</ion-label>
+                 <div slot="end">{{ items.amount }}</div>
+              </ion-item> 
+        </ion-list>
+        </ng-container>
+       </ion-card-content>
+</ion-card>  
+<ion-card class="roundedcard"> 
+<ion-card-header>
+ <ion-card-title>Income</ion-card-title>
+</ion-card-header>
+<ion-card-content>
+         <ng-container *ngFor="let items of this.incomes">
+           <ion-list *ngIf="items.date==this.selectedDate">
+             <ion-item>
+            <ion-label>{{ items.category }}</ion-label>
+            <div slot="end">{{ items.amount }}</div>
+          </ion-item>
+       </ion-list>
+       </ng-container>
+      </ion-card-content>
+</ion-card>  
+</ion-content>
+
